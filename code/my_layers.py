@@ -15,7 +15,7 @@ class Attention(Layer):
         Supports Masking.
         """
         self.supports_masking = True
-        self.init = initializations.get('glorot_uniform')
+        self.init = initializers.get('glorot_uniform')
 
         self.W_regularizer = regularizers.get(W_regularizer)
         self.b_regularizer = regularizers.get(b_regularizer)
@@ -31,13 +31,13 @@ class Attention(Layer):
 
         self.steps = input_shape[0][1]
 
-        self.W = self.add_weight((input_shape[0][-1], input_shape[1][-1]),
+        self.W = self.add_weight(shape=(input_shape[0][-1], input_shape[1][-1]),
                                     initializer=self.init,
                                     name='{}_W'.format(self.name),
                                     regularizer=self.W_regularizer,
                                     constraint=self.W_constraint)
         if self.bias:
-            self.b = self.add_weight((1,),
+            self.b = self.add_weight(shape=(1,),
                                      initializer='zero',
                                      name='{}_b'.format(self.name),
                                      regularizer=self.b_regularizer,
@@ -53,7 +53,7 @@ class Attention(Layer):
         mask = mask[0]
 
         y = K.transpose(K.dot(self.W, K.transpose(y)))
-        y = K.expand_dims(y, dim=-2)
+        y = K.expand_dims(y, -2)
         y = K.repeat_elements(y, self.steps, axis=1)
         eij = K.sum(x*y, axis=-1)
 
@@ -104,7 +104,7 @@ class WeightedAspectEmb(Layer):
                  weights=None, dropout=0., **kwargs):
         self.input_dim = input_dim
         self.output_dim = output_dim
-        self.init = initializations.get(init)
+        self.init = initializers.get(init)
         self.input_length = input_length
         self.dropout = dropout
 
