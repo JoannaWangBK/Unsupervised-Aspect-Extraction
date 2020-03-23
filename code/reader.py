@@ -86,19 +86,19 @@ def read_dataset(domain, phase, vocab, maxlen):
         if maxlen_x < len(indices):
             maxlen_x = len(indices)
 
-    print '   <num> hit rate: %.2f%%, <unk> hit rate: %.2f%%' % (100*num_hit/total, 100*unk_hit/total)
+    print('   <num> hit rate: %.2f%%, <unk> hit rate: %.2f%%' % (100*num_hit/total, 100*unk_hit/total))
     return data_x, maxlen_x
 
 
 
 def get_data(domain, vocab_size=0, maxlen=0):
-    print 'Reading data from', domain
-    print ' Creating vocab ...'
+    print('Reading data from', domain)
+    print(' Creating vocab ...')
     vocab = create_vocab(domain, maxlen, vocab_size)
-    print ' Reading dataset ...'
-    print '  train set'
+    print(' Reading dataset ...')
+    print('  train set')
     train_x, train_maxlen = read_dataset(domain, 'train', vocab, maxlen)
-    print '  test set'
+    print('  test set')
     test_x, test_maxlen = read_dataset(domain, 'test', vocab, maxlen)
     maxlen = max(train_maxlen, test_maxlen)
     return vocab, train_x, test_x, maxlen
@@ -107,7 +107,7 @@ def get_data(domain, vocab_size=0, maxlen=0):
 
 if __name__ == "__main__":
     vocab, train_x, test_x, maxlen = get_data('restaurant')
-    print len(train_x)
-    print len(test_x)
-    print maxlen
+    print(len(train_x))
+    print(len(test_x))
+    print(maxlen)
 
