@@ -120,7 +120,7 @@ class WeightedAspectEmb(Layer):
         super(WeightedAspectEmb, self).__init__(**kwargs)
 
     def build(self, input_shape):
-        self.W = self.add_weight((self.input_dim, self.output_dim),
+        self.W = self.add_weight(shape=(self.input_dim, self.output_dim),
                                  initializer=self.init,
                                  name='{}_W'.format(self.name),
                                  regularizer=self.W_regularizer,
@@ -176,11 +176,11 @@ class MaxMargin(Layer):
 
         pos = K.sum(z_s*r_s, axis=-1, keepdims=True)
         pos = K.repeat_elements(pos, steps, axis=-1)
-        r_s = K.expand_dims(r_s, dim=-2)
+        r_s = K.expand_dims(r_s)
         r_s = K.repeat_elements(r_s, steps, axis=1)
         neg = K.sum(z_n*r_s, axis=-1)
 
-        loss = K.cast(K.sum(T.maximum(0., (1. - pos + neg)), axis=-1, keepdims=True), K.floatx())
+        loss = K.cast(K.sum(K.maximum(0., (1. - pos + neg)), axis=-1, keepdims=True), K.floatx())
         return loss
 
     def compute_mask(self, input_tensor, mask=None):
